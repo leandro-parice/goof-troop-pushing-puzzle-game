@@ -4,6 +4,7 @@ export default class TileMap {
   constructor(ctx, map, tileSize) {
     this.ctx = ctx;
     this.map = map;
+    this.goalPositions = JSON.parse(JSON.stringify(map));
     this.tileSize = tileSize;
 
     this.ground = new Image();
@@ -23,15 +24,16 @@ export default class TileMap {
     for (let row = 0; row < this.map.length; row++) {
       for (let column = 0; column < this.map[row].length; column++) {
         let tile = this.map[row][column];
+        let tileGoalPosition = this.goalPositions[row][column];
 
         this.#drawGround(this.ctx, column, row, this.tileSize);
 
         if (tile === 1) {
           this.#drawWall(this.ctx, column, row, this.tileSize);
-        } else if (tile === 2) {
-          this.#drawGoalPosition(this.ctx, column, row, this.tileSize);
         } else if (tile === 3) {
           this.#drawStone(this.ctx, column, row, this.tileSize);
+        } else if (tileGoalPosition === 2) {
+          this.#drawGoalPosition(this.ctx, column, row, this.tileSize);
         }
       }
     }

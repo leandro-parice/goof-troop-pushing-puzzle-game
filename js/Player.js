@@ -58,7 +58,23 @@ export default class Player {
       this.x = newX;
       this.y = newY;
     }
+
+    this.#hasWon(this.tileMap.goalPositions, this.tileMap.map);
   };
 
-  getPlayer() {}
+  #hasWon(goals, stones) {
+    console.log(goals, stones);
+    for (let y = 0; y < goals.length; y++) {
+      for (let x = 0; x < goals[0].length; x++) {
+        if (goals[y][x] === 2) {
+          if (stones[y][x] !== 3) {
+            return false;
+          }
+        }
+      }
+    }
+
+    console.log("Ganhou");
+    return true;
+  }
 }

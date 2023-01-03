@@ -12,7 +12,7 @@ const tileSize = 64; // 4 x 16
 //3 - pedra
 //4 - personagem
 
-const map = map2;
+const map = map3;
 
 canvas.width = map.structure[0].length * tileSize;
 canvas.height = map.structure.length * tileSize;

@@ -4,7 +4,6 @@ export default class TileMap {
   constructor(ctx, map, tileSize) {
     this.ctx = ctx;
     this.map = map;
-    this.goalPositions = JSON.parse(JSON.stringify(map));
     this.tileSize = tileSize;
 
     this.ground = new Image();
@@ -21,10 +20,10 @@ export default class TileMap {
   }
 
   draw() {
-    for (let row = 0; row < this.map.length; row++) {
-      for (let column = 0; column < this.map[row].length; column++) {
-        let tile = this.map[row][column];
-        let tileGoalPosition = this.goalPositions[row][column];
+    for (let row = 0; row < this.map.structure.length; row++) {
+      for (let column = 0; column < this.map.structure[row].length; column++) {
+        let tile = this.map.structure[row][column];
+        let tileGoalPosition = this.map.goalPositions[row][column];
 
         this.#drawGround(this.ctx, column, row, this.tileSize);
 
@@ -40,12 +39,12 @@ export default class TileMap {
   }
 
   getPlayer() {
-    for (let row = 0; row < this.map.length; row++) {
-      for (let column = 0; column < this.map[row].length; column++) {
-        let tile = this.map[row][column];
+    for (let row = 0; row < this.map.structure.length; row++) {
+      for (let column = 0; column < this.map.structure[row].length; column++) {
+        let tile = this.map.structure[row][column];
 
         if (tile === 4) {
-          this.map[row][column] = 0;
+          this.map.structure[row][column] = 0;
           return new Player(this.ctx, column, row, this.tileSize, this);
         }
       }
@@ -53,7 +52,7 @@ export default class TileMap {
   }
 
   didCollideWithEnvironment(x, y) {
-    if (this.map[y][x] === 0 || this.map[y][x] === 2) {
+    if (this.map.structure[y][x] === 0 || this.map.structure[y][x] === 2) {
       return false;
     }
 
@@ -61,7 +60,7 @@ export default class TileMap {
   }
 
   didCollideWithStone(x, y, direction) {
-    if (this.map[y][x] === 3) {
+    if (this.map.structure[y][x] === 3) {
       let newX = x;
       let newY = y;
 
@@ -82,9 +81,12 @@ export default class TileMap {
         newY += 1;
       }
 
-      if (this.map[newY][newX] === 0 || this.map[newY][newX] === 2) {
-        this.map[y][x] = 0;
-        this.map[newY][newX] = 3;
+      if (
+        this.map.structure[newY][newX] === 0 ||
+        this.map.structure[newY][newX] === 2
+      ) {
+        this.map.structure[y][x] = 0;
+        this.map.structure[newY][newX] = 3;
         return false;
       }
     }

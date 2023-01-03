@@ -59,11 +59,10 @@ export default class Player {
       this.y = newY;
     }
 
-    this.#hasWon(this.tileMap.goalPositions, this.tileMap.map);
+    this.#hasWon(this.tileMap.map.goalPositions, this.tileMap.map.structure);
   };
 
   #hasWon(goals, stones) {
-    console.log(goals, stones);
     for (let y = 0; y < goals.length; y++) {
       for (let x = 0; x < goals[0].length; x++) {
         if (goals[y][x] === 2) {

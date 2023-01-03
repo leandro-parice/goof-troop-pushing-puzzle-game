@@ -1,3 +1,4 @@
+import { map1, map2, map3 } from "./Maps.js";
 import TileMap from "./TileMap.js";
 
 const canvas = document.querySelector("canvas");
@@ -11,20 +12,10 @@ const tileSize = 64; // 4 x 16
 //3 - pedra
 //4 - personagem
 
-const map = [
-  [1, 1, 1, 1, 1, 0, 0, 0, 0],
-  [1, 4, 0, 0, 1, 0, 0, 0, 0],
-  [1, 0, 3, 3, 1, 0, 1, 1, 1],
-  [1, 0, 3, 0, 1, 0, 1, 2, 1],
-  [1, 1, 1, 0, 1, 1, 1, 2, 1],
-  [0, 1, 1, 0, 0, 0, 0, 2, 1],
-  [0, 1, 0, 0, 0, 1, 0, 0, 1],
-  [0, 1, 0, 0, 0, 1, 1, 1, 1],
-  [0, 1, 1, 1, 1, 1, 0, 0, 0],
-];
+const map = map2;
 
-canvas.width = map[0].length * tileSize;
-canvas.height = map.length * tileSize;
+canvas.width = map.structure[0].length * tileSize;
+canvas.height = map.structure.length * tileSize;
 
 const tileMap = new TileMap(ctx, map, tileSize);
 const player = tileMap.getPlayer();

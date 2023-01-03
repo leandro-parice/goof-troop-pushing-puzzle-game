@@ -9,11 +9,23 @@
       body {
         margin: 0;
         padding: 0;
+        min-height: 100vh;
+      }
+      .content {
+        width: 100%;
+        background-color: black;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     </style>
   </head>
   <body>
-    <canvas id="canvas"></canvas>
+    <div class="content">
+      <canvas id="canvas"></canvas>
+    </div>
+
     <script src="js/app.js" type="module"></script>
   </body>
 </html>

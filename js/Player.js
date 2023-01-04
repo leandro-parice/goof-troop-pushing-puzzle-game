@@ -30,20 +30,46 @@ export default class Player {
       down: [3, 2, 15, 28],
     };
     this.currentPosition = this.positions.down;
+    this.dirX = 1; //1 = right | -1 = left
   }
 
   draw() {
-    this.ctx.drawImage(
-      this.player,
-      this.currentPosition[0],
-      this.currentPosition[1],
-      this.currentPosition[2],
-      this.currentPosition[3],
-      this.x * this.tileSize,
-      this.y * this.tileSize - 12 * 4,
-      this.tileSize,
-      28 * 4
-    );
+    this.ctx.save();
+
+    if (this.dirX == 1) {
+      this.ctx.drawImage(
+        this.player,
+        this.currentPosition[0],
+        this.currentPosition[1],
+        this.currentPosition[2],
+        this.currentPosition[3],
+        this.x * this.tileSize,
+        this.y * this.tileSize - 12 * 4,
+        this.tileSize,
+        28 * 4
+      );
+    } else {
+      this.ctx.translate(
+        this.x * this.tileSize + this.tileSize / 2,
+        this.y * this.tileSize - 12 * 4 + (28 * 4) / 2
+      );
+
+      this.ctx.scale(this.dirX, 1);
+
+      this.ctx.drawImage(
+        this.player,
+        this.currentPosition[0],
+        this.currentPosition[1],
+        this.currentPosition[2],
+        this.currentPosition[3],
+        -this.tileSize / 2,
+        -((28 * 4) / 2),
+        this.tileSize,
+        28 * 4
+      );
+
+      this.ctx.restore();
+    }
 
     // if (this.gameFrame % this.staggerFrames == 0) {
     //   this.currentMoviment += 1;
@@ -76,24 +102,28 @@ export default class Player {
       newX -= 1;
       direction = "left";
       this.currentPosition = this.positions.left;
+      this.dirX = -1;
     }
     //up
     if (event.keyCode == 38) {
       newY -= 1;
       direction = "up";
       this.currentPosition = this.positions.up;
+      this.dirX = 1;
     }
     //right
     if (event.keyCode == 39) {
       newX += 1;
       direction = "right";
       this.currentPosition = this.positions.right;
+      this.dirX = 1;
     }
     //down
     if (event.keyCode == 40) {
       newY += 1;
       direction = "down";
       this.currentPosition = this.positions.down;
+      this.dirX = 1;
     }
 
     if (!this.tileMap.didCollideWithEnvironment(newX, newY)) {

@@ -1,7 +1,18 @@
 # Goof Troop Pushing Puzzle Game
 
-Game desenvolvido para experimentos e estudos com a linguagem Javascript e a utilização da tag Canvas no desenvolvimento de games.
+Game developed for experiments and studies with the Javascript language and the use of the "Canvas" HTML tag.
 
-A mecânica do jogo foi inspirada no jogo "Shove It! The Warehouse Game" (https://segaretro.org/Shove_It!_...The_Warehouse_Game)
+The mechanics and maps of the game were inspired by the game "Shove It! The Warehouse Game" (https://segaretro.org/Shove_It!_...The_Warehouse_Game)
 
-Apliquei nele o visual de um jogo que marcou minha infância chamado Goof Troop (https://www.youtube.com/watch?v=f1MbPbwWdoI&ab_channel=Ruivo%E2%84%A2)
+I applied the look of a game that marked my childhood called "Goof Troop" (https://www.youtube.com/watch?v=f1MbPbwWdoI&ab_channel=Ruivo%E2%84%A2)
+
+## Improvements
+
+- Instruction and help text
+- Animation of the standing character
+- Moving character animation
+- Background sound
+- Sound on character movement
+- Screen transition between stages
+- Option to restart the game
+- Victory screen

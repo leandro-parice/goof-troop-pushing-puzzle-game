@@ -17,6 +17,6 @@ I applied the look of a game that marked my childhood called "Goof Troop" (https
 - Option to restart the game
 - Victory screen
 
-## Licença
+## Licence
 
 [MIT](https://choosealicense.com/licenses/mit/)

@@ -10,7 +10,7 @@ I applied the apparence of a game that I used to play in my childhood called "Go
 
 ![alt text](https://github.com/leandro-parice/goof-troop-pushing-puzzle-game/blob/master/screenshots/screenshot-1.png?raw=true)
 
-Link: http://leandroparice.com.br/goof-troop/
+Play online: http://leandroparice.com.br/goof-troop/
 
 ## Improvements
 

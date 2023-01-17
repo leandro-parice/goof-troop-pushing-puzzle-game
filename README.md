@@ -6,6 +6,10 @@ The mechanics and maps of the game were inspired by the game "Shove It! The Ware
 
 I applied the look of a game that marked my childhood called "Goof Troop" (https://www.youtube.com/watch?v=f1MbPbwWdoI&ab_channel=Ruivo%E2%84%A2)
 
+## Demonstration
+
+http://leandroparice.com.br/goof-troop/
+
 ## Improvements
 
 - Instruction and help text

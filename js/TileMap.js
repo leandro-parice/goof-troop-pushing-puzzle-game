@@ -13,11 +13,14 @@ export default class TileMap {
     this.imageGround = new Image();
     this.imageGround.src = "../images/ground.png";
 
-    this.imageDropWrong = new Image();
-    this.imageDropWrong.src = "../images/drop-wrong.png";
+    this.imageGoalPosition = new Image();
+    this.imageGoalPosition.src = "../images/goal-position.png";
 
-    this.imageDropRight = new Image();
-    this.imageDropRight.src = "../images/drop-right.png";
+    this.imageBox = new Image();
+    this.imageBox.src = "../images/box.png";
+
+    this.imageBoxRight = new Image();
+    this.imageBoxRight.src = "../images/box-right.png";
   }
 
   draw() {
@@ -102,25 +105,28 @@ export default class TileMap {
   }
 
   #drawGround(ctx, column, row, size) {
-    this.ctx.drawImage(this.imageGround, column * size, row * size, size, size);
+    ctx.drawImage(this.imageGround, column * size, row * size, size, size);
   }
 
   #drawWall(ctx, column, row, size) {
-    this.ctx.drawImage(this.imageWall, column * size, row * size, size, size);
+    ctx.drawImage(this.imageWall, column * size, row * size, size, size);
   }
 
   #drawGoalPosition(ctx, column, row, size) {
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(column * size, row * size, size, size);
+    ctx.drawImage(
+      this.imageGoalPosition,
+      column * size,
+      row * size,
+      size,
+      size
+    );
   }
 
   #drawStone(ctx, column, row, size, right = false) {
     if (right) {
-      ctx.fillStyle = "#fff000";
-      ctx.fillRect(column * size, row * size, size, size);
+      ctx.drawImage(this.imageBoxRight, column * size, row * size, size, size);
     } else {
-      ctx.fillStyle = "#ff0000";
-      ctx.fillRect(column * size, row * size, size, size);
+      ctx.drawImage(this.imageBox, column * size, row * size, size, size);
     }
   }
 

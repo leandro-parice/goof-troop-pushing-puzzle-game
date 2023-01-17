@@ -3,13 +3,14 @@ import TileMap from "./TileMap.js";
 
 export default class Game {
   constructor() {
-    this.stage = 5;
+    this.stage = 0;
     this.map = Maps[this.stage];
     this.tileSize = 64;
     this.canvas = null;
     this.ctx = null;
     this.tileMap = null;
     this.player = null;
+
     this.drawCanvas();
   }
 

@@ -20,6 +20,16 @@ export default class Player {
     this.imageRight = new Image();
     this.imageRight.src = "../images/player-right.png";
 
+    this.gameSize = 16;
+    this.imageWidth = 16;
+    this.imageHeight = 28;
+
+    this.width = this.imageWidth * (this.tileSize / this.gameSize);
+    this.height = this.imageHeight * (this.tileSize / this.gameSize);
+
+    this.xDifference = this.tileSize - this.width;
+    this.yDifference = this.tileSize - this.height;
+
     document.addEventListener("keydown", this.#keydown);
   }
 
@@ -27,37 +37,37 @@ export default class Player {
     if (this.direction == "left") {
       this.ctx.drawImage(
         this.imageLeft,
-        this.x * this.tileSize,
-        this.y * this.tileSize,
-        this.tileSize,
-        this.tileSize
+        this.x * this.tileSize + this.xDifference,
+        this.y * this.tileSize + this.yDifference,
+        this.width,
+        this.height
       );
     }
     if (this.direction == "up") {
       this.ctx.drawImage(
         this.imageUp,
-        this.x * this.tileSize,
-        this.y * this.tileSize,
-        this.tileSize,
-        this.tileSize
+        this.x * this.tileSize + this.xDifference,
+        this.y * this.tileSize + this.yDifference,
+        this.width,
+        this.height
       );
     }
     if (this.direction == "right") {
       this.ctx.drawImage(
         this.imageRight,
-        this.x * this.tileSize,
-        this.y * this.tileSize,
-        this.tileSize,
-        this.tileSize
+        this.x * this.tileSize + this.xDifference,
+        this.y * this.tileSize + this.yDifference,
+        this.width,
+        this.height
       );
     }
     if (this.direction == "down") {
       this.ctx.drawImage(
         this.imageDown,
-        this.x * this.tileSize,
-        this.y * this.tileSize,
-        this.tileSize,
-        this.tileSize
+        this.x * this.tileSize + this.xDifference,
+        this.y * this.tileSize + this.yDifference,
+        this.width,
+        this.height
       );
     }
   }

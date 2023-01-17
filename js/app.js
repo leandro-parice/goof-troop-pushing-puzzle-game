@@ -7,7 +7,9 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
-animate();
+addEventListener("load", (event) => {
+  animate();
+});
 
 ////////////////////////////////
 // import Maps from "./Maps.js";

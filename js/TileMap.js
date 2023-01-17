@@ -1,22 +1,23 @@
 import Player from "./Player.js";
 
 export default class TileMap {
-  constructor(ctx, map, tileSize) {
+  constructor(ctx, map, tileSize, game) {
     this.ctx = ctx;
     this.map = map;
     this.tileSize = tileSize;
+    this.game = game;
 
-    this.ground = new Image();
-    this.ground.src = "../images/ground.png";
+    this.imageWall = new Image();
+    this.imageWall.src = "../images/wall.png";
 
-    this.wall = new Image();
-    this.wall.src = "../images/wall.png";
+    this.imageGround = new Image();
+    this.imageGround.src = "../images/ground.png";
 
-    this.goalPosition = new Image();
-    this.goalPosition.src = "../images/goal-position.png";
+    this.imageDropWrong = new Image();
+    this.imageDropWrong.src = "../images/drop-wrong.png";
 
-    this.box = new Image();
-    this.box.src = "../images/box.png";
+    this.imageDropRight = new Image();
+    this.imageDropRight.src = "../images/drop-right.png";
   }
 
   draw() {
@@ -24,13 +25,17 @@ export default class TileMap {
       for (let column = 0; column < this.map.structure[row].length; column++) {
         let tile = this.map.structure[row][column];
         let tileGoalPosition = this.map.goalPositions[row][column];
-
         this.#drawGround(this.ctx, column, row, this.tileSize);
-
         if (tile === 1) {
           this.#drawWall(this.ctx, column, row, this.tileSize);
         } else if (tile === 3) {
-          this.#drawStone(this.ctx, column, row, this.tileSize);
+          this.#drawStone(
+            this.ctx,
+            column,
+            row,
+            this.tileSize,
+            tileGoalPosition === 2
+          );
         } else if (tileGoalPosition === 2) {
           this.#drawGoalPosition(this.ctx, column, row, this.tileSize);
         }
@@ -42,10 +47,16 @@ export default class TileMap {
     for (let row = 0; row < this.map.structure.length; row++) {
       for (let column = 0; column < this.map.structure[row].length; column++) {
         let tile = this.map.structure[row][column];
-
         if (tile === 4) {
           this.map.structure[row][column] = 0;
-          return new Player(this.ctx, column, row, this.tileSize, this);
+          return new Player(
+            this.ctx,
+            this,
+            this.tileSize,
+            column,
+            row,
+            this.game
+          );
         }
       }
     }
@@ -55,7 +66,6 @@ export default class TileMap {
     if (this.map.structure[y][x] === 0 || this.map.structure[y][x] === 2) {
       return false;
     }
-
     return true;
   }
 
@@ -63,7 +73,6 @@ export default class TileMap {
     if (this.map.structure[y][x] === 3) {
       let newX = x;
       let newY = y;
-
       //left
       if (direction == "left") {
         newX -= 1;
@@ -80,7 +89,6 @@ export default class TileMap {
       if (direction == "down") {
         newY += 1;
       }
-
       if (
         this.map.structure[newY][newX] === 0 ||
         this.map.structure[newY][newX] === 2
@@ -90,23 +98,109 @@ export default class TileMap {
         return false;
       }
     }
-
     return true;
   }
 
   #drawGround(ctx, column, row, size) {
-    ctx.drawImage(this.ground, column * size, row * size, size, size);
+    this.ctx.drawImage(this.imageGround, column * size, row * size, size, size);
   }
 
   #drawWall(ctx, column, row, size) {
-    ctx.drawImage(this.wall, column * size, row * size, size, size);
+    this.ctx.drawImage(this.imageWall, column * size, row * size, size, size);
   }
 
   #drawGoalPosition(ctx, column, row, size) {
-    ctx.drawImage(this.goalPosition, column * size, row * size, size, size);
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(column * size, row * size, size, size);
   }
 
-  #drawStone(ctx, column, row, size) {
-    ctx.drawImage(this.box, column * size, row * size, size, size);
+  #drawStone(ctx, column, row, size, right = false) {
+    if (right) {
+      ctx.fillStyle = "#fff000";
+      ctx.fillRect(column * size, row * size, size, size);
+    } else {
+      ctx.fillStyle = "#ff0000";
+      ctx.fillRect(column * size, row * size, size, size);
+    }
   }
+
+  // constructor(ctx, map, tileSize) {
+  //   this.ctx = ctx;
+  //   this.map = map;
+  //   this.tileSize = tileSize;
+  //   this.ground = new Image();
+  //   this.ground.src = "../images/ground.png";
+  //   this.wall = new Image();
+  //   this.wall.src = "../images/wall.png";
+  //   this.goalPosition = new Image();
+  //   this.goalPosition.src = "../images/goal-position.png";
+  //   this.box = new Image();
+  //   this.box.src = "../images/box.png";
+  // }
+  // draw() {
+  //   for (let row = 0; row < this.map.structure.length; row++) {
+  //     for (let column = 0; column < this.map.structure[row].length; column++) {
+  //       let tile = this.map.structure[row][column];
+  //       let tileGoalPosition = this.map.goalPositions[row][column];
+  //       this.#drawGround(this.ctx, column, row, this.tileSize);
+  //       if (tile === 1) {
+  //         this.#drawWall(this.ctx, column, row, this.tileSize);
+  //       } else if (tile === 3) {
+  //         this.#drawStone(this.ctx, column, row, this.tileSize);
+  //       } else if (tileGoalPosition === 2) {
+  //         this.#drawGoalPosition(this.ctx, column, row, this.tileSize);
+  //       }
+  //     }
+  //   }
+  // }
+
+  // didCollideWithEnvironment(x, y) {
+  //   if (this.map.structure[y][x] === 0 || this.map.structure[y][x] === 2) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
+  // didCollideWithStone(x, y, direction) {
+  //   if (this.map.structure[y][x] === 3) {
+  //     let newX = x;
+  //     let newY = y;
+  //     //left
+  //     if (direction == "left") {
+  //       newX -= 1;
+  //     }
+  //     //up
+  //     if (direction == "up") {
+  //       newY -= 1;
+  //     }
+  //     //right
+  //     if (direction == "right") {
+  //       newX += 1;
+  //     }
+  //     //down
+  //     if (direction == "down") {
+  //       newY += 1;
+  //     }
+  //     if (
+  //       this.map.structure[newY][newX] === 0 ||
+  //       this.map.structure[newY][newX] === 2
+  //     ) {
+  //       this.map.structure[y][x] = 0;
+  //       this.map.structure[newY][newX] = 3;
+  //       return false;
+  //     }
+  //   }
+  //   return true;
+  // }
+  // #drawGround(ctx, column, row, size) {
+  //   ctx.drawImage(this.ground, column * size, row * size, size, size);
+  // }
+  // #drawWall(ctx, column, row, size) {
+  //   ctx.drawImage(this.wall, column * size, row * size, size, size);
+  // }
+  // #drawGoalPosition(ctx, column, row, size) {
+  //   ctx.drawImage(this.goalPosition, column * size, row * size, size, size);
+  // }
+  // #drawStone(ctx, column, row, size) {
+  //   ctx.drawImage(this.box, column * size, row * size, size, size);
+  // }
 }

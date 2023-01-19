@@ -5,21 +5,30 @@ export default class Game {
   constructor() {
     this.stage = 0;
     this.map = Maps[this.stage];
-    this.tileSize = 64;
+    this.tileSize = 16;
+    this.content = null;
     this.canvas = null;
     this.ctx = null;
     this.tileMap = null;
     this.player = null;
 
     this.drawCanvas();
+
+    window.addEventListener("resize", (event) => {
+      this.resizeCanvas();
+    });
+  }
+
+  resizeCanvas() {
+    this.canvas.width = this.map.structure[0].length * this.tileSize;
+    this.canvas.height = this.map.structure.length * this.tileSize;
   }
 
   drawCanvas() {
     this.canvas = document.querySelector("canvas");
     this.ctx = this.canvas.getContext("2d");
 
-    this.canvas.width = this.map.structure[0].length * this.tileSize;
-    this.canvas.height = this.map.structure.length * this.tileSize;
+    this.resizeCanvas();
 
     this.tileMap = new TileMap(this.ctx, this.map, this.tileSize, this);
     this.player = this.tileMap.getPlayer();

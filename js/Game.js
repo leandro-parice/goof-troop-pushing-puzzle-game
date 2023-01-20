@@ -1,27 +1,26 @@
 import Maps from "./Maps.js";
 import TileMap from "./TileMap.js";
+import Score from "./Score.js";
 
 export default class Game {
   constructor() {
     this.stage = 0;
-    this.map = Maps[this.stage];
-    this.tileSize = 16;
-    this.content = null;
+    this.map = JSON.parse(JSON.stringify(Maps[this.stage]));
+    this.tileSize = 64;
     this.canvas = null;
     this.ctx = null;
+
     this.tileMap = null;
     this.player = null;
+    this.score = null;
 
     this.drawCanvas();
+
+    document.addEventListener("keydown", this.#keydown);
 
     window.addEventListener("resize", (event) => {
       this.resizeCanvas();
     });
-  }
-
-  resizeCanvas() {
-    this.canvas.width = this.map.structure[0].length * this.tileSize;
-    this.canvas.height = this.map.structure.length * this.tileSize;
   }
 
   drawCanvas() {
@@ -32,19 +31,31 @@ export default class Game {
 
     this.tileMap = new TileMap(this.ctx, this.map, this.tileSize, this);
     this.player = this.tileMap.getPlayer();
+    this.score = new Score(this.ctx, this.stage + 1);
+  }
+
+  resizeCanvas() {
+    this.canvas.width = this.map.structure[0].length * this.tileSize;
+    this.canvas.height = this.map.structure.length * this.tileSize;
   }
 
   draw() {
     this.tileMap.draw();
     this.player.draw();
+    this.score.draw();
   }
 
   nextStage() {
     if (this.stage < Maps.length - 1) {
       this.stage += 1;
-      this.map = Maps[this.stage];
+      this.map = JSON.parse(JSON.stringify(Maps[this.stage]));
       this.drawCanvas();
     }
+  }
+
+  restart() {
+    this.map = JSON.parse(JSON.stringify(Maps[this.stage]));
+    this.drawCanvas();
   }
 
   hasWon() {
@@ -60,4 +71,50 @@ export default class Game {
 
     this.nextStage();
   }
+
+  #keydown = (event) => {
+    //restart
+    if (event.key == "r") {
+      this.restart();
+    } else {
+      let newX = this.player.x;
+      let newY = this.player.y;
+      let direction = null;
+
+      //left
+      if (event.key == "ArrowLeft") {
+        newX -= 1;
+        direction = 0;
+      }
+      //up
+      else if (event.key == "ArrowUp") {
+        newY -= 1;
+        direction = 1;
+      }
+      //right
+      else if (event.key == "ArrowRight") {
+        newX += 1;
+        direction = 2;
+      }
+      //down
+      else if (event.key == "ArrowDown") {
+        newY += 1;
+        direction = 3;
+      }
+
+      this.player.setDirection(direction);
+
+      if (!this.tileMap.didCollideWithEnvironment(newX, newY)) {
+        this.player.x = newX;
+        this.player.y = newY;
+        this.score.addMoviment();
+      } else if (!this.tileMap.didCollideWithStone(newX, newY, direction)) {
+        this.player.x = newX;
+        this.player.y = newY;
+        this.score.addMoviment();
+      }
+
+      this.hasWon();
+    }
+  };
 }

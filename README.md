@@ -4,7 +4,7 @@ Game developed for experiments and studies with Javascript language and "Canvas"
 
 The mechanics and maps of the game were inspired by the game "Shove It! The Warehouse Game" (https://segaretro.org/Shove_It!_...The_Warehouse_Game)
 
-I applied the apparence of a game that I used to play in my childhood called "Goof Troop" (https://www.youtube.com/watch?v=f1MbPbwWdoI&ab_channel=Ruivo%E2%84%A2)
+I applied the apparence of a game that I used to play in my childhood called "Goof Troop" (https://www.youtube.com/watch?v=2hbce9kjONg)
 
 ## Demonstration
 

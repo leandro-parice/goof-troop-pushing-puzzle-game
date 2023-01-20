@@ -21,6 +21,10 @@ export default class Game {
 
     this.drawCanvas();
 
+    const audioObj = new Audio("./sound/sound-1.mp3");
+    audioObj.loop = true;
+    audioObj.play();
+
     document.addEventListener("keydown", this.#keydown);
 
     window.addEventListener("resize", (event) => {

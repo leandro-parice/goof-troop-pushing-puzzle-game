@@ -15,10 +15,6 @@ Play online: http://leandroparice.com.br/goof-troop/
 ## Improvements
 
 - Animation of the standing character
-- Moving character animation
-- Background sound
-- Sound on character movement
-- Option to restart the game
 - Victory screen
 
 ## Licence

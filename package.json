@@ -1,0 +1,19 @@
+{
+  "name": "game-worker",
+  "version": "1.0.0",
+  "description": "Game developed for experiments and studies with Javascript language and \"Canvas\" HTML tag.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leandro-parice/goof-troop-pushing-puzzle-game.git"
+  },
+  "author": "Leandro Parice",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leandro-parice/goof-troop-pushing-puzzle-game/issues"
+  },
+  "homepage": "https://github.com/leandro-parice/goof-troop-pushing-puzzle-game#readme"
+}

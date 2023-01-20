@@ -1,8 +1,9 @@
 export default class Score {
-  constructor(ctx, stage) {
-    this.ctx = ctx;
+  constructor(stage) {
     this.stage = stage;
     this.moviments = 0;
+    this.txtLevel = document.getElementById("txt-level");
+    this.txtMoviments = document.getElementById("txt-moviments");
   }
 
   addMoviment() {
@@ -10,11 +11,7 @@ export default class Score {
   }
 
   draw() {
-    this.ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
-    this.ctx.fillRect(10, 5, 90, 40);
-    this.ctx.font = "normal 10px Arial";
-    this.ctx.fillStyle = "#000000";
-    this.ctx.fillText(`Level: ${this.stage}`, 15, 20);
-    this.ctx.fillText(`Movimentos: ${this.moviments}`, 15, 35);
+    this.txtLevel.innerHTML = this.stage;
+    this.txtMoviments.innerHTML = this.moviments;
   }
 }

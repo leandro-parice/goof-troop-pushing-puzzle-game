@@ -14,12 +14,10 @@ Play online: http://leandroparice.com.br/goof-troop/
 
 ## Improvements
 
-- Instruction and help text
 - Animation of the standing character
 - Moving character animation
 - Background sound
 - Sound on character movement
-- Screen transition between stages
 - Option to restart the game
 - Victory screen
 

@@ -1,10 +1,13 @@
 import Maps from "./Maps.js";
 import TileMap from "./TileMap.js";
 import Score from "./Score.js";
+import PageTransition from "./PageTransition.js";
 
 export default class Game {
   constructor() {
     this.stage = 0;
+    this.status = "init";
+
     this.map = JSON.parse(JSON.stringify(Maps[this.stage]));
     this.tileSize = 64;
     this.canvas = null;
@@ -13,6 +16,8 @@ export default class Game {
     this.tileMap = null;
     this.player = null;
     this.score = null;
+
+    this.pageTransition = null;
 
     this.drawCanvas();
 
@@ -31,7 +36,14 @@ export default class Game {
 
     this.tileMap = new TileMap(this.ctx, this.map, this.tileSize, this);
     this.player = this.tileMap.getPlayer();
-    this.score = new Score(this.ctx, this.stage + 1);
+    this.score = new Score(this.stage + 1);
+
+    this.pageTransition = new PageTransition(
+      this,
+      this.ctx,
+      this.canvas.width,
+      this.canvas.height
+    );
   }
 
   resizeCanvas() {
@@ -40,9 +52,19 @@ export default class Game {
   }
 
   draw() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
     this.tileMap.draw();
     this.player.draw();
     this.score.draw();
+
+    if (this.status === "init") {
+      this.pageTransition.init();
+    }
+
+    if (this.status === "end") {
+      this.pageTransition.end();
+    }
   }
 
   nextStage() {
@@ -69,7 +91,7 @@ export default class Game {
       }
     }
 
-    this.nextStage();
+    this.status = "end";
   }
 
   #keydown = (event) => {
@@ -77,44 +99,46 @@ export default class Game {
     if (event.key == "r") {
       this.restart();
     } else {
-      let newX = this.player.x;
-      let newY = this.player.y;
-      let direction = null;
+      if (this.status === "playing") {
+        let newX = this.player.x;
+        let newY = this.player.y;
+        let direction = null;
 
-      //left
-      if (event.key == "ArrowLeft") {
-        newX -= 1;
-        direction = 0;
-      }
-      //up
-      else if (event.key == "ArrowUp") {
-        newY -= 1;
-        direction = 1;
-      }
-      //right
-      else if (event.key == "ArrowRight") {
-        newX += 1;
-        direction = 2;
-      }
-      //down
-      else if (event.key == "ArrowDown") {
-        newY += 1;
-        direction = 3;
-      }
+        //left
+        if (event.key == "ArrowLeft") {
+          newX -= 1;
+          direction = 0;
+        }
+        //up
+        else if (event.key == "ArrowUp") {
+          newY -= 1;
+          direction = 1;
+        }
+        //right
+        else if (event.key == "ArrowRight") {
+          newX += 1;
+          direction = 2;
+        }
+        //down
+        else if (event.key == "ArrowDown") {
+          newY += 1;
+          direction = 3;
+        }
 
-      this.player.setDirection(direction);
+        this.player.setDirection(direction);
 
-      if (!this.tileMap.didCollideWithEnvironment(newX, newY)) {
-        this.player.x = newX;
-        this.player.y = newY;
-        this.score.addMoviment();
-      } else if (!this.tileMap.didCollideWithStone(newX, newY, direction)) {
-        this.player.x = newX;
-        this.player.y = newY;
-        this.score.addMoviment();
+        if (!this.tileMap.didCollideWithEnvironment(newX, newY)) {
+          this.player.x = newX;
+          this.player.y = newY;
+          this.score.addMoviment();
+        } else if (!this.tileMap.didCollideWithStone(newX, newY, direction)) {
+          this.player.x = newX;
+          this.player.y = newY;
+          this.score.addMoviment();
+        }
+
+        this.hasWon();
       }
-
-      this.hasWon();
     }
   };
 }

@@ -19,20 +19,35 @@ export default class Game {
 
     this.pageTransition = null;
 
+    this.touchStartX = null;
+    this.touchStartY = null;
+    this.touchEndX = null;
+    this.touchEndY = null;
+    this.touchDiffX = null;
+    this.touchDiffY = null;
+
     this.drawCanvas();
 
-    const audioObj = new Audio("./sound/sound-1.mp3");
-    audioObj.loop = true;
-    audioObj.play();
+    // const audioObj = new Audio("./sound/sound-1.mp3");
+    // audioObj.loop = true;
+    // audioObj.play();
 
     document.addEventListener("keydown", this.#keydown);
+
+    document.addEventListener("touchstart", this.#handleStart.bind(this));
+    document.addEventListener("touchmove", this.#handleMove.bind(this));
+    document.addEventListener("touchend", this.#handleEnd.bind(this));
+    document.addEventListener(
+      "touchcancdocument",
+      this.#handleCancel.bind(this)
+    );
 
     window.addEventListener("resize", (event) => {
       this.resizeCanvas();
     });
   }
 
-  drawCanvas() {
+  drawCanvas(event) {
     this.canvas = document.querySelector("canvas");
     this.ctx = this.canvas.getContext("2d");
 
@@ -104,45 +119,100 @@ export default class Game {
       this.restart();
     } else {
       if (this.status === "playing") {
-        let newX = this.player.x;
-        let newY = this.player.y;
-        let direction = null;
-
         //left
         if (event.key == "ArrowLeft") {
-          newX -= 1;
-          direction = 0;
+          this.#movePlayer("left");
         }
         //up
         else if (event.key == "ArrowUp") {
-          newY -= 1;
-          direction = 1;
+          this.#movePlayer("up");
         }
         //right
         else if (event.key == "ArrowRight") {
-          newX += 1;
-          direction = 2;
+          this.#movePlayer("right");
         }
         //down
         else if (event.key == "ArrowDown") {
-          newY += 1;
-          direction = 3;
+          this.#movePlayer("down");
         }
-
-        this.player.setDirection(direction);
-
-        if (!this.tileMap.didCollideWithEnvironment(newX, newY)) {
-          this.player.x = newX;
-          this.player.y = newY;
-          this.score.addMoviment();
-        } else if (!this.tileMap.didCollideWithStone(newX, newY, direction)) {
-          this.player.x = newX;
-          this.player.y = newY;
-          this.score.addMoviment();
-        }
-
-        this.hasWon();
       }
     }
   };
+
+  #handleStart(event) {
+    if (event.touches && event.touches.length > 0) {
+      this.touchStartX = event.touches[0].clientX;
+      this.touchStartY = event.touches[0].clientY;
+    }
+  }
+
+  #handleMove(event) {
+    if (event && event.touches.length > 0) {
+      this.touchEndX = event.touches[0].clientX;
+      this.touchEndY = event.touches[0].clientY;
+    }
+  }
+
+  #handleEnd(event) {
+    this.touchDiffX = this.touchStartX - this.touchEndX;
+    this.touchDiffY = this.touchStartY - this.touchEndY;
+
+    if (Math.abs(this.touchDiffX) > Math.abs(this.touchDiffY)) {
+      /*most significant*/
+      if (this.touchDiffX > 0) {
+        console.log(this);
+        this.#movePlayer("left");
+      } else {
+        this.#movePlayer("right");
+      }
+    } else {
+      if (this.touchDiffY > 0) {
+        this.#movePlayer("up");
+      } else {
+        this.#movePlayer("down");
+      }
+    }
+
+    /* reset values */
+    this.touchStartX = null;
+    this.touchStartY = null;
+  }
+
+  #handleCancel(event) {
+    console.log("cancel");
+  }
+
+  #movePlayer(strDirection) {
+    let newX = this.player.x;
+    let newY = this.player.y;
+    let direction = 3;
+
+    if (strDirection == "left") {
+      newX -= 1;
+      direction = 0;
+    } else if (strDirection == "up") {
+      newY -= 1;
+      direction = 1;
+    } else if (strDirection == "right") {
+      newX += 1;
+      direction = 2;
+    } else if (strDirection == "down") {
+      newY += 1;
+      direction = 3;
+    }
+
+    this.player.setDirection(direction);
+
+    if (!this.tileMap.didCollideWithEnvironment(newX, newY)) {
+      this.player.x = newX;
+      this.player.y = newY;
+      this.score.addMoviment();
+    } else if (!this.tileMap.didCollideWithStone(newX, newY, direction)) {
+      this.player.x = newX;
+      this.player.y = newY;
+      this.score.addMoviment();
+    }
+
+    this.hasWon();
+  }
 }

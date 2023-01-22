@@ -8,19 +8,19 @@ export default class TileMap {
     this.game = game;
 
     this.imageWall = new Image();
-    this.imageWall.src = "../images/wall.png";
+    this.imageWall.src = "images/wall.png";
 
     this.imageGround = new Image();
-    this.imageGround.src = "../images/ground.png";
+    this.imageGround.src = "images/ground.png";
 
     this.imageGoalPosition = new Image();
-    this.imageGoalPosition.src = "../images/goal-position.png";
+    this.imageGoalPosition.src = "images/goal-position.png";
 
     this.imageBox = new Image();
-    this.imageBox.src = "../images/box.png";
+    this.imageBox.src = "images/box.png";
 
     this.imageBoxRight = new Image();
-    this.imageBoxRight.src = "../images/box-right.png";
+    this.imageBoxRight.src = "images/box-right.png";
   }
 
   draw() {

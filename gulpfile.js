@@ -20,9 +20,7 @@ function copyFiles() {
 
 function replaceTemplate() {
   return src(["build/js/Player.js", "build/js/TileMap.js"])
-    .pipe(
-      replace("../images/", "http://leandroparice.com.br/goof-troop/images/")
-    )
+    .pipe(replace("images/", "http://leandroparice.com.br/goof-troop/images/"))
     .pipe(dest("build/js/"));
 }
 

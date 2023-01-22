@@ -9,16 +9,16 @@ export default class Player {
     this.direction = 3;
 
     const imageLeft = new Image();
-    imageLeft.src = "../images/player-left.png";
+    imageLeft.src = "images/player-left.png";
 
     const imageUp = new Image();
-    imageUp.src = "../images/player-up.png";
+    imageUp.src = "images/player-up.png";
 
     const imageRight = new Image();
-    imageRight.src = "../images/player-right.png";
+    imageRight.src = "images/player-right.png";
 
     const imageDown = new Image();
-    imageDown.src = "../images/player-down.png";
+    imageDown.src = "images/player-down.png";
 
     this.images = [imageLeft, imageUp, imageRight, imageDown];
 

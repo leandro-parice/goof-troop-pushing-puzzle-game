@@ -39,8 +39,27 @@
         justify-content: space-between;
       }
       .info ul {
-        text-align: right;
         list-style: none;
+        text-align: right;
+      }
+      .info ul li.mobile {
+        display: none;
+      }
+
+      @media only screen and (max-width: 600px) {
+        .info {
+          display: block;
+          text-align: center;
+        }
+        .info ul {
+          text-align: center;
+        }
+        .info ul li.mobile {
+          display: block;
+        }
+        .info ul li.desktop {
+          display: none;
+        }
       }
     </style>
   </head>
@@ -53,8 +72,9 @@
         </p>
       </div>
       <ul>
-        <li>Use as setas do teclado para mover o personagem</li>
-        <li>Use a tecla "R" para reiniciar a partida</li>
+        <li class="desktop">Use as setas do teclado para mover o personagem</li>
+        <li class="desktop">Use a tecla "R" para reiniciar a partida</li>
+        <li class="mobile">Arraste os dedos na tela para mover o personagem</li>
       </ul>
     </div>
     <div class="content">

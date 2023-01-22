@@ -15,5 +15,13 @@
   "bugs": {
     "url": "https://github.com/leandro-parice/goof-troop-pushing-puzzle-game/issues"
   },
-  "homepage": "https://github.com/leandro-parice/goof-troop-pushing-puzzle-game#readme"
+  "homepage": "https://github.com/leandro-parice/goof-troop-pushing-puzzle-game#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-copy": "^4.0.1",
+    "gulp-minifier": "^3.5.0",
+    "gulp-replace": "^1.1.4",
+    "gulp-terser": "^2.1.0"
+  }
 }

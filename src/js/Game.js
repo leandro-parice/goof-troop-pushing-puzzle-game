@@ -5,10 +5,25 @@ import PageTransition from "./PageTransition.js";
 
 export default class Game {
   constructor() {
-    this.stage = 0;
+    // localStorage.clear();
+
+    if (localStorage.getItem("stage") === null) {
+      this.stage = 0;
+      localStorage.setItem("stage", 0);
+    } else {
+      this.stage = parseInt(localStorage.getItem("stage"));
+    }
+
+    if (localStorage.getItem("best") === null) {
+      this.best = [];
+    } else {
+      this.best = JSON.parse(localStorage.getItem("best")).map(Number);
+    }
+
     this.status = "init";
 
-    this.map = JSON.parse(JSON.stringify(Maps[this.stage]));
+    this.map = this.getMap();
+
     this.tileSize = 64;
     this.canvas = null;
     this.ctx = null;
@@ -32,6 +47,14 @@ export default class Game {
     // audioObj.loop = true;
     // audioObj.play();
 
+    this.btnBack = document.getElementById("btn-back");
+    this.btnNext = document.getElementById("btn-next");
+    this.btnRestart = document.getElementById("btn-restart");
+
+    this.btnBack.addEventListener("click", this.#goToBack.bind(this));
+    this.btnNext.addEventListener("click", this.#goToNext.bind(this));
+    this.btnRestart.addEventListener("click", this.restart.bind(this));
+
     document.addEventListener("keydown", this.#keydown);
 
     document.addEventListener("touchstart", this.#handleStart.bind(this));
@@ -47,7 +70,93 @@ export default class Game {
     });
   }
 
-  drawCanvas(event) {
+  #goToBack() {
+    console.log("sim1", this.stage);
+    if (this.stage >= 1) {
+      console.log("sim2");
+      this.stage -= 1;
+      localStorage.setItem("stage", this.stage);
+      this.map = this.getMap();
+      this.drawCanvas();
+    }
+  }
+
+  #goToNext() {
+    if (
+      this.stage < Maps.length - 1 &&
+      this.best[this.stage + 1] !== undefined
+    ) {
+      this.stage += 1;
+      localStorage.setItem("stage", this.stage);
+      this.map = this.getMap();
+      this.drawCanvas();
+    }
+  }
+
+  getMap() {
+    const arrayStructure = this.getStructureMap(Maps[this.stage]);
+    const arrayGoalPositions = this.getGoalPositionsMap(Maps[this.stage]);
+
+    return JSON.parse(
+      JSON.stringify({
+        structure: arrayStructure,
+        goalPositions: arrayGoalPositions,
+      })
+    );
+  }
+
+  getStructureMap(map) {
+    const convertedString = map
+      .replaceAll(" ", "0")
+      .replaceAll(".", "0")
+      .replaceAll("#", "1")
+      .replaceAll("*", "3")
+      .replaceAll("$", "3")
+      .replaceAll("@", "4");
+
+    return this.preperMap(convertedString);
+  }
+
+  getGoalPositionsMap(map) {
+    const convertedString = map
+      .replaceAll(" ", "0")
+      .replaceAll(".", "2")
+      .replaceAll("#", "0")
+      .replaceAll("*", "2")
+      .replaceAll("$", "0")
+      .replaceAll("@", "0");
+
+    return this.preperMap(convertedString);
+  }
+
+  preperMap(map) {
+    const arrayMap = map.split(";");
+
+    let maxWidth = 0;
+    arrayMap.forEach((row) => {
+      const rowLength = row.length;
+      if (rowLength > maxWidth) {
+        maxWidth = rowLength;
+      }
+    });
+
+    const matrix = arrayMap.map((row) => {
+      for (let x = row.length; x < maxWidth; x++) {
+        row = row + "0";
+      }
+      row = [...row];
+
+      row = row.map(Number);
+
+      return row;
+    });
+
+    const newArray = matrix;
+
+    return newArray;
+  }
+
+  drawCanvas() {
     this.canvas = document.querySelector("canvas");
     this.ctx = this.canvas.getContext("2d");
 
@@ -55,7 +164,7 @@ export default class Game {
 
     this.tileMap = new TileMap(this.ctx, this.map, this.tileSize, this);
     this.player = this.tileMap.getPlayer();
-    this.score = new Score(this.stage + 1);
+    this.score = new Score(this.stage + 1, this.getBest());
 
     this.pageTransition = new PageTransition(
       this,
@@ -72,7 +181,6 @@ export default class Game {
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
     this.tileMap.draw();
     this.player.draw();
     this.score.draw();
@@ -89,13 +197,16 @@ export default class Game {
   nextStage() {
     if (this.stage < Maps.length - 1) {
       this.stage += 1;
-      this.map = JSON.parse(JSON.stringify(Maps[this.stage]));
+      localStorage.setItem("stage", this.stage);
+      this.best[this.stage] = 0;
+      localStorage.setItem("best", JSON.stringify(this.best));
+      this.map = this.getMap();
       this.drawCanvas();
     }
   }
 
   restart() {
-    this.map = JSON.parse(JSON.stringify(Maps[this.stage]));
+    this.map = this.getMap();
     this.drawCanvas();
   }
 
@@ -110,7 +221,24 @@ export default class Game {
       }
     }
 
+    if (this.best[this.stage] !== undefined) {
+      if (this.best[this.stage] > this.score.moviments) {
+        this.best[this.stage] = this.score.moviments;
+      }
+    } else {
+      this.best[this.stage] = this.score.moviments;
+    }
+    localStorage.setItem("best", JSON.stringify(this.best));
+
     this.status = "end";
+  }
+
+  getBest() {
+    if (this.best[this.stage] !== undefined) {
+      return this.best[this.stage];
+    }
+
+    return 0;
   }
 
   #keydown = (event) => {
@@ -160,7 +288,6 @@ export default class Game {
     if (Math.abs(this.touchDiffX) > Math.abs(this.touchDiffY)) {
       /*most significant*/
       if (this.touchDiffX > 0) {
-        console.log(this);
         this.#movePlayer("left");
       } else {
         this.#movePlayer("right");

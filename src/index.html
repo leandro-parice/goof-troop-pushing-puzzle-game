@@ -21,7 +21,7 @@
       }
       .content {
         width: 100%;
-        height: calc(100vh - 150px);
+        height: calc(100vh - 200px);
         display: inline-block;
       }
       canvas {
@@ -46,6 +46,18 @@
         display: none;
       }
 
+      .buttons {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch;
+      }
+
+      .buttons button {
+        padding: 8px 16px;
+        font-size: 14px;
+      }
+
       @media only screen and (max-width: 600px) {
         .info {
           display: block;
@@ -68,7 +80,8 @@
       <div class="score">
         <p>
           <strong>Level:</strong> <span id="txt-level"></span><br />
-          <strong>Movimentos: </strong> <span id="txt-moviments"></span>
+          <strong>Movimentos: </strong> <span id="txt-moviments"></span> -
+          <strong>Melhor marca: </strong> <span id="txt-best"></span>
         </p>
       </div>
       <ul>
@@ -79,6 +92,11 @@
     </div>
     <div class="content">
       <canvas></canvas>
+    </div>
+    <div class="buttons">
+      <button id="btn-back"><<</button>
+      <button id="btn-restart">Reiniciar</button>
+      <button id="btn-next">>></button>
     </div>
     <img src="./images/box-right.png" />
     <img src="./images/box.png" />

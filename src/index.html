@@ -5,98 +5,43 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Game</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 14px;
-      }
-      body {
-        margin: 0;
-        padding: 0;
-        min-height: 100vh;
-        overflow: hidden;
-      }
-      .content {
-        width: 100%;
-        height: calc(100vh - 200px);
-        display: inline-block;
-      }
-      canvas {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-      }
-      img {
-        display: none;
-      }
-      .info {
-        padding: 10px;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-      }
-      .info ul {
-        list-style: none;
-        text-align: right;
-      }
-      .info ul li.mobile {
-        display: none;
-      }
-
-      .buttons {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: stretch;
-      }
-
-      .buttons button {
-        padding: 8px 16px;
-        font-size: 14px;
-      }
-
-      @media only screen and (max-width: 600px) {
-        .info {
-          display: block;
-          text-align: center;
-        }
-        .info ul {
-          text-align: center;
-        }
-        .info ul li.mobile {
-          display: block;
-        }
-        .info ul li.desktop {
-          display: none;
-        }
-      }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/app.css" />
   </head>
   <body>
-    <div class="info">
+    <div class="content">
+      <canvas></canvas>
+    </div>
+    <div class="hamburger-lines">
+      <span class="line line1"></span>
+      <span class="line line2"></span>
+      <span class="line line3"></span>
+    </div>
+    <div class="menu-items">
       <div class="score">
         <p>
           <strong>Level:</strong> <span id="txt-level"></span><br />
-          <strong>Movimentos: </strong> <span id="txt-moviments"></span> -
+          <strong>Movimentos: </strong> <span id="txt-moviments"></span><br />
           <strong>Melhor marca: </strong> <span id="txt-best"></span>
         </p>
       </div>
+      <h4>Instruções</h4>
       <ul>
         <li class="desktop">Use as setas do teclado para mover o personagem</li>
         <li class="desktop">Use a tecla "R" para reiniciar a partida</li>
         <li class="mobile">Arraste os dedos na tela para mover o personagem</li>
       </ul>
-    </div>
-    <div class="content">
-      <canvas></canvas>
-    </div>
-    <div class="buttons">
-      <button id="btn-back"><<</button>
-      <button id="btn-restart">Reiniciar</button>
-      <button id="btn-next">>></button>
+      <div class="buttons">
+        <button id="btn-back"><<</button>
+        <button id="btn-restart">Reiniciar</button>
+        <button id="btn-clear">Limpar dados</button>
+        <button id="btn-next">>></button>
+      </div>
     </div>
     <img src="./images/box-right.png" />
     <img src="./images/box.png" />

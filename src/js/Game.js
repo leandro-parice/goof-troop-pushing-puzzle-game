@@ -5,8 +5,6 @@ import PageTransition from "./PageTransition.js";
 
 export default class Game {
   constructor() {
-    // localStorage.clear();
-
     if (localStorage.getItem("stage") === null) {
       this.stage = 0;
       localStorage.setItem("stage", 0);
@@ -50,20 +48,27 @@ export default class Game {
     this.btnBack = document.getElementById("btn-back");
     this.btnNext = document.getElementById("btn-next");
     this.btnRestart = document.getElementById("btn-restart");
+    this.btnClear = document.getElementById("btn-clear");
 
     this.btnBack.addEventListener("click", this.#goToBack.bind(this));
     this.btnNext.addEventListener("click", this.#goToNext.bind(this));
     this.btnRestart.addEventListener("click", this.restart.bind(this));
+    this.btnClear.addEventListener("click", this.clear.bind(this));
 
     document.addEventListener("keydown", this.#keydown);
 
-    document.addEventListener("touchstart", this.#handleStart.bind(this));
-    document.addEventListener("touchmove", this.#handleMove.bind(this));
-    document.addEventListener("touchend", this.#handleEnd.bind(this));
-    document.addEventListener(
-      "touchcancdocument",
-      this.#handleCancel.bind(this)
-    );
+    document
+      .querySelector("canvas")
+      .addEventListener("touchstart", this.#handleStart.bind(this));
+    document
+      .querySelector("canvas")
+      .addEventListener("touchmove", this.#handleMove.bind(this));
+    document
+      .querySelector("canvas")
+      .addEventListener("touchend", this.#handleEnd.bind(this));
+    document
+      .querySelector("canvas")
+      .addEventListener("touchcancdocument", this.#handleCancel.bind(this));
 
     window.addEventListener("resize", (event) => {
       this.resizeCanvas();
@@ -71,13 +76,13 @@ export default class Game {
   }
 
   #goToBack() {
-    console.log("sim1", this.stage);
     if (this.stage >= 1) {
-      console.log("sim2");
       this.stage -= 1;
       localStorage.setItem("stage", this.stage);
       this.map = this.getMap();
       this.drawCanvas();
+
+      this.toogleMenu();
     }
   }
 
@@ -90,6 +95,8 @@ export default class Game {
       localStorage.setItem("stage", this.stage);
       this.map = this.getMap();
       this.drawCanvas();
+
+      this.toogleMenu();
     }
   }
 
@@ -208,6 +215,22 @@ export default class Game {
   restart() {
     this.map = this.getMap();
     this.drawCanvas();
+
+    this.toogleMenu();
+  }
+
+  clear() {
+    localStorage.clear();
+
+    this.stage = 0;
+    localStorage.setItem("stage", this.stage);
+    this.best = [];
+    localStorage.setItem("best", JSON.stringify(this.best));
+
+    this.map = this.getMap();
+    this.drawCanvas();
+
+    this.toogleMenu();
   }
 
   hasWon() {
@@ -341,5 +364,10 @@ export default class Game {
     }
 
     this.hasWon();
+  }
+
+  toogleMenu() {
+    document.querySelector(".hamburger-lines").classList.remove("active");
+    document.querySelector(".menu-items").classList.remove("active");
   }
 }

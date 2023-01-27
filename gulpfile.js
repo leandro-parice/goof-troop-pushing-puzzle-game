@@ -14,6 +14,7 @@ function copyFiles() {
     "src/index.html",
     "src/js/*.js",
     "src/images/*",
+    "src/css/*.css",
     "src/sound/sound-1.mp3",
   ]).pipe(gulpCopy("build", { prefix: 1 }));
 }
